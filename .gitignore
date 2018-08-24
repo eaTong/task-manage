@@ -1,0 +1,13 @@
+# build output
+dist
+build
+.next
+
+# dependencies
+node_modules
+
+# webstorm config
+.idea
+
+# logs
+*.log

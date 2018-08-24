@@ -1,0 +1,40 @@
+{
+  "presets": [
+    [
+      "es2015",
+      {
+        "modules": false
+      }
+    ],
+    "stage-0",
+    "react"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "react-hot-loader/babel",
+        "syntax-dynamic-import",
+        "transform-decorators-legacy",
+        [
+          "import",
+          {
+            "libraryName": "antd",
+            "style":true
+          }
+        ]
+      ]
+    },
+    "production": {
+      "plugins": [
+        "transform-decorators-legacy",
+        [
+          "import",
+          {
+            "libraryName": "antd",
+            "style":true
+          }
+        ]
+      ]
+    }
+  }
+}
