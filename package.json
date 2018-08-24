@@ -1,7 +1,7 @@
 {
   "name": "task-manager",
   "version": "0.0.1",
-  "description": "",
+  "description": "task-manager",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node index",

@@ -13,11 +13,9 @@ const serve = require('koa-static');
 const session = require('koa-session-minimal');
 const MysqlStore = require('koa-mysql-session');
 const router = require('./routers');
-const {mysql} = require('../shared/config');
+const {mysql , port} = require('../shared/config');
 //register schedule
 require('./framework/schedule');
-
-const port = parseInt(process.env.PORT, 10) || 8001;
 
 const app = new Koa();
 //use compression
@@ -65,7 +63,7 @@ router.get('/*', async (ctx, next) => {
   ctx.body = createReadStream('dist/index.html');
 });
 
-app.listen(port, (err) => {
+app.listen(port.server, (err) => {
   if (err) throw err;
-  console.log(`> Ready on http://localhost:${port}`)
+  console.log(`> Ready on http://localhost:${port.server}`)
 });
