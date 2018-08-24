@@ -14,8 +14,6 @@ const session = require('koa-session-minimal');
 const MysqlStore = require('koa-mysql-session');
 const router = require('./routers');
 const {mysql , port} = require('../shared/config');
-//register schedule
-require('./framework/schedule');
 
 const app = new Koa();
 //use compression

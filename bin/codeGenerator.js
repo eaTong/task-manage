@@ -137,6 +137,9 @@ function getImportModel(form) {
 function getAsyncModel(form) {
   return `  await ${upperFirstLetter(form)}.sync({alter: true});`;
 }
+function getAsyncMenu(form) {
+  return ` {name: '${form}', icon: 'file', path: '/admin/${form}', enable: true},`;
+}
 
 function getFrontFormPath(form) {
   let finalPath = path.resolve(basePath, 'front', 'pages');
@@ -384,6 +387,7 @@ rl.question('What\'s the form name ?', async form => {
 
   await updateFile(initDbPath, 'importModel', getImportModel(form));
   await updateFile(initDbPath, 'asyncModel', getAsyncModel(form));
+  await updateFile(initDbPath, 'asyncMenu', getAsyncMenu(form));
 
 
 // generate code of frontend
