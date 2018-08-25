@@ -36,7 +36,7 @@ class TaskService extends BaseService {
       offset: pageIndex * pageSize,
       limit: pageSize,
       include: [
-        {model: User , as :'responsibleUser'}
+        {model: User, as: 'responsibleUser'}
       ]
     });
     return {total, list}
@@ -45,6 +45,15 @@ class TaskService extends BaseService {
   static async getTaskDetail(id) {
     return await Task.findOne({where: {id}});
   }
+
+  static async getMyTasks(id, completed) {
+    return await Task.findAll({where: {responsible_user_id: id, complete_percent: {[completed ? Op.eq : Op.nt]: 100}}});
+  }
 }
 
 module.exports = TaskService;
+
+
+(async () => {
+  console.log(await TaskService.getMyTasks(1))
+})();

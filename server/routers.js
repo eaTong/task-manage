@@ -45,6 +45,7 @@ router.post('/api/task/get', TaskApi.getTasks);
 router.post('/api/task/update', insertLog('update'), checkArguments(['id', 'title', 'plan_start_date', 'plan_end_date']), TaskApi.updateTasks);
 router.post('/api/task/delete', insertLog('delete'), checkArguments(['ids']), TaskApi.deleteTasks);
 router.post('/api/task/detail', checkArguments(['id']), TaskApi.getTaskDetail);
+router.post('/api/task/mine', TaskApi.getMyTasks);
 //UPDATE_TAG:defineRouter
 
 router.post('/api/*', async ctx => {

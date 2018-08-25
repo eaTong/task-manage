@@ -1,4 +1,3 @@
-
 /**
  * Created by eaTong on 2018-24-08 .
  * Description: auto generated in  2018-24-08
@@ -31,7 +30,11 @@ class TaskApi extends BaseApi {
     return await TaskService.getTaskDetail(ctx.request.body);
   }
 
+  static async getMyTasks(ctx) {
+    const completed = ctx.request.body;
+    return await TaskService.getMyTasks(ctx.session.loginUser.id , completed);
+  }
+
 }
 
 module.exports = TaskApi;
-  
