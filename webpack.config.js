@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const autoPrefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const mainColor = '#45be89';
+const mainColor = '#2f54eb';
 const buildPath = path.resolve(__dirname, 'static');
 
 function resolve(dir) {
@@ -28,7 +28,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
       '~': resolve('front'),
-      'public': resolve('public')
+      'shared': resolve('shared')
     }
   },
   plugins: [

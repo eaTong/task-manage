@@ -8,7 +8,7 @@ const buildPath = path.resolve(__dirname, 'dist');
 const webContextRoot = '/';// 应用的实际访问路径，默认是'/'   可以试试/static/
 const AppCachePlugin = require('appcache-webpack-plugin');
 
-const mainColor = '#45be89';
+const mainColor = '#2f54eb';
 
 function resolve(dir) {
   return path.join(__dirname,  dir)
@@ -32,7 +32,7 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json'],
     alias: {
       '~': resolve('front'),
-      'public': resolve('public')
+      'shared': resolve('shared')
     }
   },
   plugins: [

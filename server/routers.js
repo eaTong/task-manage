@@ -40,11 +40,11 @@ router.post('/api/user/logout', insertLog('login'), UserApi.logout);
 router.post('/api/user/grant', insertLog('grant'), checkArguments(['userId', 'roles']), UserApi.grantRole);
 
 
-router.post('/api/task/add', insertLog('add'), checkArguments(['name']), TaskApi.addTask);
+router.post('/api/task/add', insertLog('add'), checkArguments(['title', 'plan_start_date', 'plan_end_date']), TaskApi.addTask);
 router.post('/api/task/get', TaskApi.getTasks);
-router.post('/api/task/update', insertLog('update'), checkArguments(['id', 'name']), TaskApi.updateTasks);
+router.post('/api/task/update', insertLog('update'), checkArguments(['id', 'title', 'plan_start_date', 'plan_end_date']), TaskApi.updateTasks);
 router.post('/api/task/delete', insertLog('delete'), checkArguments(['ids']), TaskApi.deleteTasks);
-router.post('/api/task/detail',  checkArguments(['id']), TaskApi.getTaskDetail);
+router.post('/api/task/detail', checkArguments(['id']), TaskApi.getTaskDetail);
 //UPDATE_TAG:defineRouter
 
 router.post('/api/*', async ctx => {

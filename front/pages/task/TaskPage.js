@@ -1,18 +1,26 @@
-
 /**
  * Created by eaTong on 2018-24-08 .
  * Description: auto generated in  2018-24-08
  */
 
 import React, {Component} from 'react';
-import {Button, message ,Input} from 'antd';
+import {Button, message, Input} from 'antd';
 import AgTable from '~/components/AgTable';
 import TaskModal from "./TaskModal";
 import {inject, observer} from "mobx-react";
 
 const ButtonGroup = Button.Group;
 const columns = [
-  {title: '名称', dataIndex: 'name', key: 'name'},
+  {title: '名称', dataIndex: 'title'},
+  {title: '描述', dataIndex: 'description'},
+  {title: '紧急程度', dataIndex: 'emergent_level'},
+  {title: '重要程度', dataIndex: 'important_level'},
+  {title: '责任人', dataIndex: 'responsibleUser', render: item => item && item.name},
+  {title: '完成比例', dataIndex: 'complete_percent'},
+  {title: '计划开始日期', dataIndex: 'plan_start_date'},
+  {title: '计划结束日期', dataIndex: 'plan_end_date'},
+  {title: '实际开始日期', dataIndex: 'start_date'},
+  {title: '实际结束日期', dataIndex: 'end_date'},
 ];
 
 @inject('task') @observer
@@ -27,7 +35,7 @@ class TaskPage extends Component {
       <div className="base-layout task-page">
         <header className="header">
           <div className="label">
-            用户管理
+            任务管理
             <Input.Search
               className={'search'}
               placeholder={'输入关键字搜索'}
@@ -66,4 +74,3 @@ class TaskPage extends Component {
 
 TaskPage.propTypes = {};
 export default TaskPage;
-  

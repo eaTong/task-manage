@@ -1,4 +1,3 @@
-
 /**
  * Created by eaTong on 2018-24-08 .
  * Description: auto generated in  2018-24-08
@@ -9,6 +8,7 @@ const sequelize = require('../framework/database');
 const {LogicError} = require('../framework/errors');
 const BaseService = require('../framework/BaseService');
 const Task = require('../models/Task');
+const User = require('../models/User');
 
 class TaskService extends BaseService {
 
@@ -29,9 +29,16 @@ class TaskService extends BaseService {
     const option = {where: {enable: true}};
     const {dataValues: {total}} = await Task.findOne({
       ...option,
-      attributes: [[sequelize.fn('COUNT', '*'), 'total']]
+      attributes: [[sequelize.fn('COUNT', '*'), 'total']],
     });
-    const list = await Task.findAll({offset: pageIndex * pageSize, limit: pageSize, ...option});
+    const list = await Task.findAll({
+      ...option,
+      offset: pageIndex * pageSize,
+      limit: pageSize,
+      include: [
+        {model: User , as :'responsibleUser'}
+      ]
+    });
     return {total, list}
   }
 
@@ -41,4 +48,3 @@ class TaskService extends BaseService {
 }
 
 module.exports = TaskService;
-  
