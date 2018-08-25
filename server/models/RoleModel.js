@@ -3,8 +3,8 @@
  */
 const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
-const Menu = require('./MenuModel');
-const RoleMenu = require('./RoleMenuModel');
+const Menu = require('./Menu');
+const RoleMenu = require('./RoleMenu');
 
 const Role = sequelize.define('role', {
   name: Sequelize.STRING,

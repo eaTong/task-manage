@@ -1,13 +1,14 @@
 /**
  * Created by eatong on 18-2-11.
  */
-const User = require('../server/models/UserModel');
-const OperationLog = require('../server/models/OperationLogModel');
-const Menu = require('../server/models/MenuModel');
+const User = require('../server/models/User');
+const OperationLog = require('../server/models/OperationLog');
+const Menu = require('../server/models/Menu');
 const Role = require('../server/models/RoleModel');
-const RoleMenu = require('../server/models/RoleMenuModel');
+const RoleMenu = require('../server/models/RoleMenu');
 const UserRole = require('../server/models/UserRole');
 const Task = require('../server/models/Task');
+const TaskLog = require('../server/models/TaskLog');
 //UPDATE_TAG:importModel
 
 (async () => {
@@ -28,6 +29,7 @@ async function initialDatabaseStructure() {
   await RoleMenu.sync({alter: true});
   await UserRole.sync({alter: true});
   await Task.sync({alter: true});
+  await TaskLog.sync({alter: true});
 //UPDATE_TAG:asyncModel
 }
 
@@ -35,7 +37,7 @@ async function initialMenu() {
   const menuList = [
     {name: '用户管理', icon: 'user', path: '/admin/user', enable: true},
     {name: '角色管理', icon: 'team', path: '/admin/role', enable: true},
-    {name: 'task', icon: 'team', path: '/admin/task', enable: true},
+    {name: '任务管理', icon: 'team', path: '/admin/task', enable: true},
 //UPDATE_TAG:asyncMenu
   ];
   await Menu.bulkCreate(menuList, {updateOnDuplicate: ['path', 'name', 'icon', 'enable']});

@@ -4,8 +4,8 @@
 const {Op} = require('sequelize');
 
 const BaseService = require('../framework/BaseService');
-const User = require('../models/UserModel');
-const Menu = require('../models/MenuModel');
+const User = require('../models/User');
+const Menu = require('../models/Menu');
 const Role = require('../models/RoleModel');
 
 class MenuService extends BaseService {

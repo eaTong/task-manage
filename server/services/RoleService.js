@@ -6,7 +6,7 @@ const {Op} = require('sequelize');
 const {LogicError} = require('../framework/errors');
 const BaseService = require('../framework/BaseService');
 const Role = require('../models/RoleModel');
-const Menu = require('../models/MenuModel');
+const Menu = require('../models/Menu');
 
 class RoleService extends BaseService {
 

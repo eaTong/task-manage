@@ -4,7 +4,7 @@
 const {Op} = require('sequelize');
 
 const BaseService = require('../framework/BaseService');
-const Log = require('../models/OperationLogModel');
+const Log = require('../models/OperationLog');
 
 class LogService extends BaseService {
   static async insertLog(log) {

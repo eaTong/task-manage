@@ -18,6 +18,9 @@ const router = new Router();
 router.post('/api/*', checkLogin);
 router.post('/api/*', structureData);
 
+router.post('/api/user/login', insertLog('login'), checkArguments(['account', 'password']), UserApi.login);
+router.post('/api/user/loginByCode', insertLog('login'), checkArguments(['code']), UserApi.loginByCode);
+
 router.post('/api/image/upload', FileApi.uploadImage);
 
 router.post('/api/menu/get', MenuApi.getMenus);
@@ -33,7 +36,6 @@ router.post('/api/user/add', insertLog('add'), checkArguments(['account', 'name'
 router.post('/api/user/get', UserApi.getUsers);
 router.post('/api/user/update', insertLog('update'), checkArguments(['id', 'account', 'name']), UserApi.updateUsers);
 router.post('/api/user/delete', insertLog('delete'), checkArguments(['ids']), UserApi.deleteUsers);
-router.post('/api/user/login', insertLog('login'), checkArguments(['account', 'password']), UserApi.login);
 router.post('/api/user/logout', insertLog('login'), UserApi.logout);
 router.post('/api/user/grant', insertLog('grant'), checkArguments(['userId', 'roles']), UserApi.grantRole);
 
@@ -41,8 +43,8 @@ router.post('/api/user/grant', insertLog('grant'), checkArguments(['userId', 'ro
 router.post('/api/task/add', insertLog('add'), checkArguments(['name']), TaskApi.addTask);
 router.post('/api/task/get', TaskApi.getTasks);
 router.post('/api/task/update', insertLog('update'), checkArguments(['id', 'name']), TaskApi.updateTasks);
-router.post('/api/task/delete', insertLog('delete'), checkArguments(['ids']), TaskApi.deleteTasks);  
-router.post('/api/task/detail',  checkArguments(['id']), TaskApi.getTaskDetail); 
+router.post('/api/task/delete', insertLog('delete'), checkArguments(['ids']), TaskApi.deleteTasks);
+router.post('/api/task/detail',  checkArguments(['id']), TaskApi.getTaskDetail);
 //UPDATE_TAG:defineRouter
 
 router.post('/api/*', async ctx => {
