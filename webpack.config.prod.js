@@ -1,9 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const autoPrefixer = require('autoprefixer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const buildPath = path.resolve(__dirname, 'dist');
 const webContextRoot = '/';// 应用的实际访问路径，默认是'/'   可以试试/static/
 const AppCachePlugin = require('appcache-webpack-plugin');
@@ -16,17 +14,12 @@ function resolve(dir) {
 }
 
 module.exports = {
-  devtool: 'cheap-module',
-  entry: {
-    main: [
-      'babel-polyfill',
-      './front/index.js'
-    ],
-    vendor: ['reqwest', 'echarts', 'react', 'react-dom', 'react-router', 'react-router-dom', 'moment']
-  },
+  mode: 'production',
+  entry: './front/index.js',
+
   output: {
     path: buildPath,
-    filename: 'js/[name]_[chunkhash:8].js',
+    filename: '[name]-[hash].js',
     publicPath: webContextRoot
   },
   resolve: {

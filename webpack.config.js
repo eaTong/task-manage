@@ -7,12 +7,12 @@ const mainColor = '#2f54eb';
 const buildPath = path.resolve(__dirname, 'static');
 
 function resolve(dir) {
-  return path.join(__dirname,  dir)
+  return path.join(__dirname, dir)
 }
 
 
 module.exports = {
-  devtool: 'cheap-module-source-map',
+  mode: 'development',
   entry: [
     'babel-polyfill',
     'react-hot-loader/patch',
