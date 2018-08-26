@@ -4,6 +4,7 @@
 
 const {ArgMissError, LogicError} = require('./errors');
 const LogService = require('../services/LogService');
+const whiteList = ['/api/user/login', '/api/user/loginByCode', '/api/user/bind'];
 
 module.exports.checkArguments = (args) => {
   return async (ctx, next) => {
@@ -26,7 +27,7 @@ module.exports.checkArguments = (args) => {
 };
 
 module.exports.checkLogin = async (ctx, next) => {
-  if (!/^\/api\/pub/.test(ctx.originalUrl) && ['/api/user/login', '/api/user/loginByCode'].indexOf(ctx.originalUrl) === -1) {
+  if (!/^\/api\/pub/.test(ctx.originalUrl) && whiteList.indexOf(ctx.originalUrl) === -1) {
     if (!ctx.session.loginUser) {
       ctx.status = 401;
       ctx.body = {success: false, data: {}, message: 'this api is not a shared api ,please login'};
