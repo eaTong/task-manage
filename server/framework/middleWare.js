@@ -26,7 +26,7 @@ module.exports.checkArguments = (args) => {
 };
 
 module.exports.checkLogin = async (ctx, next) => {
-  if (!/^\/api\/pub/.test(ctx.originalUrl) && ctx.originalUrl !== '/api/user/login') {
+  if (!/^\/api\/pub/.test(ctx.originalUrl) && ['/api/user/login', '/api/user/loginByCode'].indexOf(ctx.originalUrl) === -1) {
     if (!ctx.session.loginUser) {
       ctx.status = 401;
       ctx.body = {success: false, data: {}, message: 'this api is not a shared api ,please login'};
