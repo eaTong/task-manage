@@ -102,7 +102,8 @@ module.exports = {
             options: {
               sourceMap: true,
               modules: false,
-              modifyVars: {"primary-color": mainColor}
+              modifyVars: {"primary-color": mainColor},
+              javascriptEnabled: true
             }
           }
         ]

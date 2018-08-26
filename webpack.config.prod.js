@@ -7,6 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const buildPath = path.resolve(__dirname, 'dist');
 const webContextRoot = '/';// 应用的实际访问路径，默认是'/'   可以试试/static/
 const AppCachePlugin = require('appcache-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const mainColor = '#2f54eb';
 
@@ -35,19 +36,80 @@ module.exports = {
       'shared': resolve('shared')
     }
   },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules)/,
+        use: ['babel-loader']
+      }, {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true || {/* CSSNano Options */}
+            }
+          }, {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [autoPrefixer]
+            }
+          }]
+      }, {
+        test: /\.less$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true || {/* CSSNano Options */}
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [autoPrefixer]
+            }
+          }, {
+            loader: 'less-loader',
+            options: {
+              modifyVars: {"primary-color": mainColor},
+              javascriptEnabled: true
+            }
+          }
+        ]
+      }, {
+        test: /\.(jpg|png|gif)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 25000,
+            name: '[name]_[hash:8].[ext]'
+          }
+        }
+
+      }, {
+        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 25000,
+            mimetype: 'application/font-woff',
+            name: '[name]_[hash:8].[ext]'
+          }
+        }
+      }
+    ]
+  },
   plugins: [
-    new CleanWebpackPlugin(['dist', 'build']),
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en-ca|zh-cn/),
-    new webpack.optimize.OccurrenceOrderPlugin(true),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
     new AppCachePlugin({
       exclude: ["index.html"],
       output: '/manifest.appcache'
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: ['vendor'],
-      filename: 'vendor.[chunkhash].js',
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'index-production.html'),
@@ -71,98 +133,9 @@ module.exports = {
         }
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        screw_ie8: true,
-        conditionals: true,
-        unused: true,
-        comparisons: true,
-        sequences: true,
-        dead_code: true,
-        evaluate: true,
-        if_return: true,
-        join_vars: true,
-        drop_debugger: true,
-        drop_console: true
-      },
-      output: {
-        comments: false
-      }
-    }),
-    new webpack.HashedModuleIdsPlugin(),
-    new ExtractTextPlugin("styles-[contenthash].css"),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /(node_modules)/,
-        use: ['babel-loader']
-      }, {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true || {/* CSSNano Options */}
-              }
-            }, {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: [autoPrefixer]
-              }
-            }]
-        })
-      }, {
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true || {/* CSSNano Options */}
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                ident: 'postcss',
-                plugins: [autoPrefixer]
-              }
-            }, {
-              loader: 'less-loader',
-              options: {
-                modifyVars: {"primary-color": mainColor}
-              }
-            }
-          ]
-        })
-      }, {
-        test: /\.(jpg|png|gif)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 25000,
-            name: '[name]_[hash:8].[ext]'
-          }
-        }
-
-      }, {
-        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 25000,
-            mimetype: 'application/font-woff',
-            name: '[name]_[hash:8].[ext]'
-          }
-        }
-      }
-    ]
-  }
+    new MiniCssExtractPlugin({
+      filename: "[name]-[hash].css",
+      chunkFilename: "[id].css"
+    })
+  ]
 };
