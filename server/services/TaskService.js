@@ -9,6 +9,7 @@ const {LogicError} = require('../framework/errors');
 const BaseService = require('../framework/BaseService');
 const Task = require('../models/Task');
 const User = require('../models/User');
+const TaskLog = require('../models/TaskLog');
 
 class TaskService extends BaseService {
 
@@ -43,7 +44,7 @@ class TaskService extends BaseService {
   }
 
   static async getTaskDetail(id) {
-    return await Task.findOne({where: {id}});
+    return await Task.findOne({where: {id} , include:[{model:TaskLog}]});
   }
 
   static async getMyTasks(id, completed) {

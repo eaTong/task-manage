@@ -32,7 +32,10 @@ class TaskModal extends Component {
 
   async componentDidMount() {
     if (this.props.operateType === 'edit') {
-      this.props.form.setFieldsValue(this.props.formData);
+      this.props.form.setFieldsValue({
+        ...this.props.formData,
+        responsible_user_id: this.props.formData.responsible_user_id + ''
+      });
     }
     const {data} = await ajax({url: '/api/user/get'});
     this.setState({users: data});
@@ -67,11 +70,6 @@ class TaskModal extends Component {
               <Input/>
             )}
           </FormItem>
-          <FormItem {...formItemLayout} label="描述">
-            {getFieldDecorator('description')(
-              <TextArea autosize={{minRows: 3}}/>
-            )}
-          </FormItem>
           <FormItem {...formItemLayout} label="紧急程度">
             {getFieldDecorator('emergent_level', {initialValue: 3})(
               <Slider max={emergentLevel.length} min={1}/>
@@ -88,7 +86,7 @@ class TaskModal extends Component {
                 required: true, message: '请选择责任人!',
               }],
             })(
-              <Select>{this.state.users.map(user => <Option key={user.id}>{user.name}</Option>)}</Select>
+              <Select>{this.state.users.map(user => <Option key={user.id + ''}>{user.name}</Option>)}</Select>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="时间计划">
@@ -98,6 +96,11 @@ class TaskModal extends Component {
               }],
             })(
               <RangePicker/>
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="描述">
+            {getFieldDecorator('description')(
+              <TextArea autosize={{minRows: 3}}/>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="相关图片">

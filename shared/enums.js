@@ -12,5 +12,8 @@ const importantLevel = [
   {value: 4, label: '很重要', color: '#fa8c16'},
   {value: 5, label: '非常重要', color: '#f5222d'},
 ];
-
+const userTypes = [
+  {value: 0, label: '普通员工'},
+  {value: 1, label: '管理者'},
+];
 module.exports = {emergentLevel, importantLevel};

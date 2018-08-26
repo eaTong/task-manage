@@ -12,6 +12,9 @@ class TaskApi extends BaseApi {
   static async addTask(ctx) {
     return await TaskService.addTask(ctx.request.body);
   }
+  static async addTaskDraft(ctx) {
+    return await TaskService.addTask(ctx.request.body);
+  }
 
   static async updateTasks(ctx) {
     return await TaskService.updateTasks(ctx.request.body);
@@ -22,7 +25,7 @@ class TaskApi extends BaseApi {
   }
 
   static async getTasks(ctx) {
-    const {pageIndex = 0, pageSize = 20} = ctx.request.body;
+    const {pageIndex = 0, pageSize = 20 , } = ctx.request.body;
     return await TaskService.getTasks(pageIndex, pageSize);
   }
 
