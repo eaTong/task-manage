@@ -20,6 +20,7 @@ router.post('/api/*', structureData);
 
 router.post('/api/user/login', insertLog('login'), checkArguments(['account', 'password']), UserApi.login);
 router.post('/api/user/loginByCode', insertLog('login'), checkArguments(['code']), UserApi.loginByCode);
+router.post('/api/user/bind', insertLog('bind'), checkArguments(['code']), UserApi.bindUser);
 
 router.post('/api/image/upload', FileApi.uploadImage);
 
