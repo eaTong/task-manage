@@ -22,9 +22,11 @@ const Task = sequelize.define('task', {
   level: {type: Sequelize.INTEGER, comment: '层级'},
   pictures: {type: Sequelize.STRING, comment: '图片'},
   responsible_user_id: {type: Sequelize.INTEGER,},
+  publish_user_id: {type: Sequelize.INTEGER,},
 
   enable: Sequelize.BOOLEAN,
 }, {comment: '任务'});
 // Task.hasOne(User, {foreignKey: 'responsible_user_id'});
-Task.belongsTo(User, {foreignKey: 'responsible_user_id' ,as :'responsibleUser'});
+Task.belongsTo(User, {foreignKey: 'responsible_user_id', as: 'responsibleUser'});
+Task.belongsTo(User, {foreignKey: 'publish_user_id', as: 'publishUser'});
 module.exports = Task;

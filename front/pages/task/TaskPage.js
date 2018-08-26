@@ -15,6 +15,7 @@ const columns = [
   {title: '描述', dataIndex: 'description'},
   {title: '紧急程度', dataIndex: 'emergent_level'},
   {title: '重要程度', dataIndex: 'important_level'},
+  {title: '发布人', dataIndex: 'publishUser', render: item => item && item.name},
   {title: '责任人', dataIndex: 'responsibleUser', render: item => item && item.name},
   {title: '完成比例', dataIndex: 'complete_percent'},
   {title: '计划开始日期', dataIndex: 'plan_start_date'},
