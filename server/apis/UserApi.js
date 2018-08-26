@@ -51,6 +51,7 @@ class UserApi extends BaseApi {
 
   static async bindUser(ctx) {
     const openid = ctx.session.openid;
+    console.log(openid);
     const user = await UserService.bindUser({...ctx.request.body, openid});
     if (!user) {
       throw new LogicError('用户名或密码错误！');
