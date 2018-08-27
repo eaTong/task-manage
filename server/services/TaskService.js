@@ -49,7 +49,7 @@ class TaskService extends BaseService {
   }
 
   static async getMyTasks(id, completed) {
-    return await Task.findAll({where: {responsible_user_id: id, complete_percent: {[completed ? Op.eq : Op.ne]: 100}}});
+    return await Task.findAll({where: {responsible_user_id: id, complete_percent: {[completed ? Op.ne : Op.eq]: 100}}});
   }
 }
 
