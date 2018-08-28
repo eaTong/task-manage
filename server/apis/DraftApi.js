@@ -11,7 +11,8 @@ const BaseApi = require('../framework/BaseApi');
 
 class DraftApi extends BaseApi {
   static async addDraft(ctx) {
-    return await DraftService.addDraft(ctx.request.body);
+    const userId = ctx.session.loginUser.id;
+    return await DraftService.addDraft(ctx.request.body , userId);
   }
 
   static async updateDrafts(ctx) {
@@ -34,4 +35,3 @@ class DraftApi extends BaseApi {
 }
 
 module.exports = DraftApi;
-  

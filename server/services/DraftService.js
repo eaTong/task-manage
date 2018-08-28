@@ -1,4 +1,3 @@
-
 /**
  * Created by eaTong on 2018-28-08 .
  * Description: auto generated in  2018-28-08
@@ -12,9 +11,10 @@ const Draft = require('../models/Draft');
 
 class DraftService extends BaseService {
 
-  static async addDraft(draft) {
+  static async addDraft(draft, userId) {
     draft.enable = true;
     draft.status = 1;
+    draft.user_id = userId;
     return await Draft.create(draft);
   }
 

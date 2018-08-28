@@ -13,8 +13,9 @@ const TaskLog = require('../models/TaskLog');
 
 class TaskService extends BaseService {
 
-  static async addTask(task) {
+  static async addTask(task, userId) {
     task.enable = true;
+    task.publish_user_id = userId;
     return await Task.create(task);
   }
 

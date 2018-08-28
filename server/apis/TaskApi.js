@@ -10,10 +10,9 @@ const BaseApi = require('../framework/BaseApi');
 
 class TaskApi extends BaseApi {
   static async addTask(ctx) {
-    return await TaskService.addTask(ctx.request.body);
-  }
-  static async addTaskDraft(ctx) {
-    return await TaskService.addTask(ctx.request.body);
+    const userId = ctx.session.loginUser.id;
+
+    return await TaskService.addTask(ctx.request.body , userId);
   }
 
   static async updateTasks(ctx) {
