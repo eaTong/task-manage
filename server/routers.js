@@ -11,6 +11,7 @@ const UserApi = require('./apis/UserApi');
 const RoleApi = require('./apis/RoleApi');
 const MenuApi = require('./apis/MenuApi');
 const TaskApi = require('./apis/TaskApi');
+const DraftApi = require('./apis/DraftApi');
 //UPDATE_TAG:importApi
 
 const router = new Router();
@@ -42,12 +43,17 @@ router.post('/api/user/grant', insertLog('grant'), checkArguments(['userId', 'ro
 
 
 router.post('/api/task/add', insertLog('add'), checkArguments(['title', 'plan_start_date', 'plan_end_date']), TaskApi.addTask);
-router.post('/api/task/add/draft', insertLog('add'), checkArguments(['title']), TaskApi.addTaskDraft);
 router.post('/api/task/get', TaskApi.getTasks);
 router.post('/api/task/update', insertLog('update'), checkArguments(['id', 'title']), TaskApi.updateTasks);
 router.post('/api/task/delete', insertLog('delete'), checkArguments(['ids']), TaskApi.deleteTasks);
 router.post('/api/task/detail', checkArguments(['id']), TaskApi.getTaskDetail);
 router.post('/api/task/mine', TaskApi.getMyTasks);
+
+router.post('/api/draft/add', insertLog('add'), checkArguments(['title']), DraftApi.addDraft);
+router.post('/api/draft/get', DraftApi.getDrafts);
+router.post('/api/draft/update', insertLog('update'), checkArguments(['id', 'title']), DraftApi.updateDrafts);
+router.post('/api/draft/delete', insertLog('delete'), checkArguments(['ids']), DraftApi.deleteDrafts);
+router.post('/api/draft/detail',  checkArguments(['id']), DraftApi.getDraftDetail);
 //UPDATE_TAG:defineRouter
 
 router.post('/api/*', async ctx => {
