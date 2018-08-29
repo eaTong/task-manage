@@ -54,7 +54,7 @@ router.post('/api/draft/get', DraftApi.getDrafts);
 router.post('/api/draft/update', insertLog('update'), checkArguments(['id', 'title']), DraftApi.updateDrafts);
 router.post('/api/draft/delete', insertLog('delete'), checkArguments(['ids']), DraftApi.deleteDrafts);
 router.post('/api/draft/detail',  checkArguments(['id']), DraftApi.getDraftDetail);
-router.post('/api/task/mine', DraftApi.getMine);
+router.post('/api/draft/mine', DraftApi.getMine);
 //UPDATE_TAG:defineRouter
 
 router.post('/api/*', async ctx => {

@@ -13,7 +13,7 @@ class DraftService extends BaseService {
 
   static async addDraft(draft, userId) {
     draft.enable = true;
-    draft.status = 1;
+    draft.status = 0;
     draft.user_id = userId;
     return await Draft.create(draft);
   }
