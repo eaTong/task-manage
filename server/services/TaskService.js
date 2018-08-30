@@ -8,6 +8,7 @@ const sequelize = require('../framework/database');
 const {LogicError} = require('../framework/errors');
 const BaseService = require('../framework/BaseService');
 const Task = require('../models/Task');
+const Draft = require('../models/Draft');
 const User = require('../models/User');
 const TaskLog = require('../models/TaskLog');
 
@@ -16,6 +17,10 @@ class TaskService extends BaseService {
   static async addTask(task, userId) {
     task.enable = true;
     task.publish_user_id = userId;
+    task.response_user_id = task.response_user_id || userId;
+    if (task.draftId) {
+      await Draft.update({status: 1}, {id: task.draftId});
+    }
     return await Task.create(task);
   }
 
