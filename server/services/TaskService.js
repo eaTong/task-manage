@@ -17,7 +17,7 @@ class TaskService extends BaseService {
   static async addTask(task, userId) {
     task.enable = true;
     task.publish_user_id = userId;
-    task.response_user_id = task.response_user_id || userId;
+    task.responsble_user_id = task.responsble_user_id || userId;
     if (task.draftId) {
       await Draft.update({status: 1}, {id: task.draftId});
     }
