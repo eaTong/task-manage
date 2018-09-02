@@ -4,11 +4,14 @@
  */
 
 import React, {Component} from 'react';
-import {Button, message, Input} from 'antd';
+import {Button, message, Input, Tree, Progress} from 'antd';
 import AgTable from '~/components/AgTable';
 import TaskModal from "./TaskModal";
 import {inject, observer} from "mobx-react";
+import './task.less';
+import {emergentLevel} from 'shared/enums';
 
+const TreeNode = Tree.TreeNode;
 const ButtonGroup = Button.Group;
 const columns = [
   {title: '名称', dataIndex: 'title'},
@@ -30,6 +33,29 @@ class TaskPage extends Component {
     await this.props.task.getDataList();
   }
 
+  renderTreeNode(datas) {
+    return datas.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode title={this.getTreeNodeTitle(item)} key={item.id}>
+            {this.renderTreeNode(item.children)}
+          </TreeNode>
+        )
+      } else {
+        return <TreeNode title={this.getTreeNodeTitle(item)} key={item.id}/>
+      }
+    })
+  }
+
+  getTreeNodeTitle(node) {
+    return (
+      <div className="task-item">
+        <div className="title" style={{color: emergentLevel[node.emergent_level - 1].color}}>{node.title}</div>
+        <Progress type="circle" percent={node.complete_percent || 0} width={20}/>
+      </div>
+    )
+  }
+
   render() {
     const {dataList, operateType, showModal, selectedKeys, rowSelection, firstSelected} = this.props.task;
     return (
@@ -37,11 +63,6 @@ class TaskPage extends Component {
         <header className="header">
           <div className="label">
             任务管理
-            <Input.Search
-              className={'search'}
-              placeholder={'输入关键字搜索'}
-              onSearch={(val) => this.props.task.searchData(val)}
-            />
           </div>
           <ButtonGroup className="buttons">
             <Button onClick={() => this.props.task.toggleModal('add')}>新建</Button>
@@ -50,16 +71,16 @@ class TaskPage extends Component {
             <Button onClick={() => this.props.task.deleteData()} disabled={selectedKeys.length === 0}>删除</Button>
           </ButtonGroup>
         </header>
-        <AgTable
-          columns={columns}
-          dataSource={dataList}
-          rowKey="id"
-          tableId="task-table"
-          pagination={this.props.task.pagination}
-          rowSelection={{
-            selectedRowKeys: selectedKeys,
-            onChange: (keys) => this.props.task.onChangeSelection(keys)
-          }}/>
+        <div className="content">
+          {dataList.length > 0 && (
+            <Tree
+              selectedKeys={selectedKeys}
+              onSelect={keys => this.props.task.onChangeSelection(keys)}
+              defaultExpandAll>
+              {this.renderTreeNode(dataList)}
+            </Tree>
+          )}
+        </div>
         {showModal && (
           <TaskModal
             onCancel={() => this.props.task.toggleModal()}
