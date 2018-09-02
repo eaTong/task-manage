@@ -9,12 +9,12 @@ import ajax from "~/util/ajaxUtil";
 import BaseStore from '~/stores/BaseStore'
 
 export default class TaskStore extends BaseStore {
-  listApi = '/api/task/get';
+  listApi = '/api/task/mine';
   addApi = '/api/task/add';
   updateApi = '/api/task/update';
   deleteApi = '/api/task/delete';
   detailApi = '/api/task/detail';
-  
+
   @action
   async searchData(keywords) {
     this.queryOption = {keywords};

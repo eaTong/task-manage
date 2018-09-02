@@ -5,10 +5,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
 
-const User = sequelize.define('code', {
-  max: Sequelize.INTEGER,
-  type: Sequelize.STRING,
-});
+const TaskParticipators = sequelize.define('task_participator', {}, {timestamps: false,});
 
-
-module.exports = User;
+module.exports = TaskParticipators;

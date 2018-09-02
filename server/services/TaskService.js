@@ -3,25 +3,56 @@
  * Description: auto generated in  2018-24-08
  */
 
+
 const {Op} = require('sequelize');
 const sequelize = require('../framework/database');
 const {LogicError} = require('../framework/errors');
 const BaseService = require('../framework/BaseService');
+const CodeService = require('./CodeService');
 const Task = require('../models/Task');
 const Draft = require('../models/Draft');
 const User = require('../models/User');
 const TaskLog = require('../models/TaskLog');
+const TaskParticipators = require('../models/TaskParticipators');
 
 class TaskService extends BaseService {
 
   static async addTask(task, userId) {
+    console.time('addTask');
     task.enable = true;
     task.publish_user_id = userId;
-    task.responsble_user_id = task.responsble_user_id || userId;
+    task.responsible_user_id = task.responsible_user_id || userId;
+    //如果是子项目，code前缀为父任务的code， 另外需要将所有父层项目加入责任人
+    if (task.parentCode) {
+      //查询父层code ，并根据父层code获取所有父层code
+      task.code = await CodeService.generateCode(parentTask.code);
+      let prefix = task.parentCode.replace(/_.*/, '');
+      // for(let code in parentTask.code.sp)?
+      const codeArr = task.parentCode.split('_');
+      const parentCodes = [];
+      for (let i = 1; i < codeArr.length; i++) {
+        prefix += '_' + codeArr[i];
+        parentCodes.push(prefix);
+      }
+      const allParentTasks = await Task.findAll({where: {code: {[Op.in]: parentCodes}}});
+      const parentsTaskParticipatorIds = allParentTasks.map(item => item.id);
+      const responsibleUser = await User.findById(task.responsible_user_id);
+      responsibleUser.addParticipators(parentsTaskParticipatorIds);
+      await responsibleUser.save();
+
+    } else {
+      task.code = await CodeService.generateCode('task');
+    }
     if (task.draftId) {
       await Draft.update({status: 1}, {id: task.draftId});
     }
-    return await Task.create(task);
+
+    const taskParticipators = Array.from(new Set([task.publish_user_id, task.responsible_user_id]));
+    const taskModel = await Task.create(task);
+    taskModel.addParticipators(taskParticipators);
+    await taskModel.save();
+    console.timeEnd('addTask');
+    return taskModel;
   }
 
   static async updateTasks(data) {
@@ -55,8 +86,39 @@ class TaskService extends BaseService {
   }
 
   static async getMyTasks(id, completed) {
-    return await Task.findAll({where: {responsible_user_id: id, complete_percent: {[completed ? Op.ne : Op.eq]: 100}}});
+    const myTasks = await Task.findAll({
+      include: [{model: User, as: 'participators', where: {id}}],
+      where: {complete_percent: {[completed ? Op.eq : Op.ne]: 100}},
+      order: [['code', 'DESC']]
+    });
+    const taskMapping = {};
+    myTasks.forEach(item => {
+      item = item.toJSON();
+
+      //如果mapping中有当前code为key的值，说明已经循环完当前的子项了，那么将所有子项的key删除，避免二次计算（code肯定是唯一的）
+      if (taskMapping[item.code]) {
+        item = {...item, children: taskMapping[item.code]};
+      }
+      const parentCode = item.code.slice(0, item.code.lastIndexOf('_'));
+      //将当前节点push到父层节点上
+      taskMapping[parentCode] = taskMapping[parentCode] || [];
+      taskMapping[parentCode].push(item);
+      delete taskMapping[item.code];
+
+    });
+
+    const myTasksTree = [];
+
+    for (let key in taskMapping) {
+      if (Object.keys(taskMapping[key])) {
+        myTasksTree.push(...taskMapping[key])
+      }
+    }
+    return myTasksTree;
+
   }
 }
 
 module.exports = TaskService;
+TaskService.addTask({title: 'bbbbb', parent_id: 36, responsible_user_id: 2}, 2);
+// TaskService.getMyTasks(1)

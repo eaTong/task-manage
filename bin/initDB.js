@@ -3,11 +3,13 @@
  */
 const User = require('../server/models/User');
 const OperationLog = require('../server/models/OperationLog');
+const Code = require('../server/models/Code');
 const Menu = require('../server/models/Menu');
 const Role = require('../server/models/RoleModel');
 const RoleMenu = require('../server/models/RoleMenu');
 const UserRole = require('../server/models/UserRole');
 const Task = require('../server/models/Task');
+const TaskParticipators = require('../server/models/TaskParticipators');
 const TaskLog = require('../server/models/TaskLog');
 const Draft = require('../server/models/Draft');
 //UPDATE_TAG:importModel
@@ -25,11 +27,13 @@ async function initialDatabaseStructure() {
 
   await User.sync({alter: true});
   await OperationLog.sync({alter: true});
+  await Code.sync({alter: true});
   await Menu.sync({alter: true});
   await Role.sync({alter: true});
   await RoleMenu.sync({alter: true});
   await UserRole.sync({alter: true});
   await Task.sync({alter: true});
+  await TaskParticipators.sync({alter: true});
   await TaskLog.sync({alter: true});
   await Draft.sync({alter: true});
 //UPDATE_TAG:asyncModel

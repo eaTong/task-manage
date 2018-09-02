@@ -9,26 +9,19 @@ const Code = require('../models/Code');
 
 class CodeService extends BaseService {
   static async generateCode(type) {
-    const maxCode = Code.findOne({type});
+    const pad = '000';
+    const maxCode = await Code.findOne({where: {type}});
     let code, commit;
     if (maxCode) {
-      code = maxCode.max;
-      commit = Code.update({max: maxCode.max + 1}, {where: {type}});
+      code = maxCode.max + 1;
+      await Code.update({max: maxCode.max + 1}, {where: {type}});
     } else {
-      code = '001';
-      Code.insert({type, max: 1});
+      code = 1;
+      Code.create({type, max: 1});
     }
-    return {
-      type: `${type}_${code}`, commit
-    }
+    return `${type}_${code > 999 ? code : `${pad.substring(0, pad.length - String(code).length)}${code}`}`
+
   }
 }
-
-
-(async () => {
-  const {type  , commit} = await CodeService.generateCode('test');
-  console.log(type , commit);
-})();
-
 
 module.exports = CodeService;
