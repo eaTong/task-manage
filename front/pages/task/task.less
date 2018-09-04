@@ -2,14 +2,17 @@
 
 .task-page {
   .content {
-    background-color: @bgColor;
+    background-color: #fff;
   }
   .ant-tree {
-    .ant-tree-treenode-switcher-open {
+    .ant-tree-treenode-switcher-open , .ant-tree-treenode-switcher-close {
       display: flex;
       flex-wrap: wrap;
       ul {
         width: 100%;
+      }
+      .ant-tree-switcher {
+        background-color: inherit;
       }
       .ant-tree-node-content-wrapper {
         flex: 1;
@@ -20,22 +23,28 @@
 
           .task-item {
             width: 100%;
-            //position: relative;
-            display: flex;
-            .title {
-              //position: relative;
-              z-index: 2;
-              flex: 1;
-            }
+            .header-info {
 
-            //.ant-progress-line {
-            //  .ant-progress-outer {
-            //
-            //    .ant-progress-inner {
-            //      background-color: inherit;
-            //    }
-            //  }
-            //}
+              display: flex;
+              .title{
+                flex:1;
+              }
+            }
+            .main-info {
+              color: @lightTextColor;
+              display: flex;
+              .info-item {
+                flex: 1;
+
+                &.time {
+                  flex: 2;
+                }
+                &.workload {
+                  text-align: right;
+                }
+              }
+
+            }
           }
         }
       }

@@ -18,16 +18,15 @@ const TaskParticipators = require('../models/TaskParticipators');
 class TaskService extends BaseService {
 
   static async addTask(task, userId) {
-    console.time('addTask');
     task.enable = true;
     task.publish_user_id = userId;
-    task.responsible_user_id = task.responsible_user_id || userId;
+    task.responsible_user_id = ~~task.responsible_user_id || userId;
+    task.pictures = JSON.stringify(task.pictures);
     //如果是子项目，code前缀为父任务的code， 另外需要将所有父层项目加入责任人
     if (task.parentCode) {
       //查询父层code ，并根据父层code获取所有父层code
-      task.code = await CodeService.generateCode(parentTask.code);
+      task.code = await CodeService.generateCode(task.parentCode);
       let prefix = task.parentCode.replace(/_.*/, '');
-      // for(let code in parentTask.code.sp)?
       const codeArr = task.parentCode.split('_');
       const parentCodes = [];
       for (let i = 1; i < codeArr.length; i++) {
@@ -51,12 +50,12 @@ class TaskService extends BaseService {
     const taskModel = await Task.create(task);
     taskModel.addParticipators(taskParticipators);
     await taskModel.save();
-    console.timeEnd('addTask');
     return taskModel;
   }
 
-  static async updateTasks(data) {
-    return await Task.update(data, {where: {id: data.id}})
+  static async updateTasks(task) {
+    task.pictures = JSON.stringify(task.pictures);
+    return await Task.update(task, {where: {id: task.id}})
   }
 
   static async deleteTasks(ids) {
@@ -87,13 +86,18 @@ class TaskService extends BaseService {
 
   static async getMyTasks(id, completed) {
     const myTasks = await Task.findAll({
-      include: [{model: User, as: 'participators', where: {id}}],
+      include: [
+        {model: User, as: 'responsibleUser'},
+        {model: User, as: 'publishUser'},
+        {model: User, as: 'participators', where: {id}}
+      ],
       where: {complete_percent: {[completed ? Op.eq : Op.ne]: 100}},
       order: [['code', 'DESC']]
     });
     const taskMapping = {};
     myTasks.forEach(item => {
       item = item.toJSON();
+      item.pictures = item.pictures ? JSON.parse(item.pictures) : [];
 
       //如果mapping中有当前code为key的值，说明已经循环完当前的子项了，那么将所有子项的key删除，避免二次计算（code肯定是唯一的）
       if (taskMapping[item.code]) {
@@ -120,5 +124,5 @@ class TaskService extends BaseService {
 }
 
 module.exports = TaskService;
-TaskService.addTask({title: 'bbbbb', parent_id: 36, responsible_user_id: 2}, 2);
+// TaskService.addTask({title: 'bbbbb', parent_id: 36, responsible_user_id: 2}, 2);
 // TaskService.getMyTasks(1)

@@ -5,10 +5,11 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Modal, Form, Input, message, Slider, DatePicker, Select} from 'antd';
+import {Modal, Form, Input, message, Slider, DatePicker, Select , InputNumber} from 'antd';
 import ImageUploader from "~/components/ImageUploader";
 import {emergentLevel, importantLevel} from 'shared/enums';
 import ajax from '~/util/ajaxUtil';
+import moment from 'moment'
 
 const FormItem = Form.Item;
 const RangePicker = DatePicker.RangePicker;
@@ -32,9 +33,11 @@ class TaskModal extends Component {
 
   async componentDidMount() {
     if (this.props.operateType === 'edit') {
+      const formData = this.props.formData;
       this.props.form.setFieldsValue({
-        ...this.props.formData,
-        responsible_user_id: this.props.formData.responsible_user_id + ''
+        ...formData,
+        responsible_user_id: formData.responsible_user_id + '',
+        plan: [moment(formData.plan_start_date), moment(formData.plan_end_date)]
       });
     }
     const {data} = await ajax({url: '/api/user/get'});
@@ -77,7 +80,12 @@ class TaskModal extends Component {
           </FormItem>
           <FormItem {...formItemLayout} label="重要程度">
             {getFieldDecorator('important_level', {initialValue: 3})(
-              <Slider max={emergentLevel.length} min={1}/>
+              <Slider max={importantLevel.length} min={1}/>
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="工作量">
+            {getFieldDecorator('workload')(
+              <InputNumber min={0}/>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="责任人">

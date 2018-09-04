@@ -4,7 +4,7 @@
  */
 
 import React, {Component} from 'react';
-import {Button, message, Input, Tree, Progress} from 'antd';
+import {Button, message, Input, Tree, Progress, Icon} from 'antd';
 import AgTable from '~/components/AgTable';
 import TaskModal from "./TaskModal";
 import {inject, observer} from "mobx-react";
@@ -37,27 +37,45 @@ class TaskPage extends Component {
     return datas.map(item => {
       if (item.children) {
         return (
-          <TreeNode title={this.getTreeNodeTitle(item)} key={item.id}>
+          <TreeNode title={this.getTreeNodeTitle(item)} key={item.id} detail={item}>
             {this.renderTreeNode(item.children)}
           </TreeNode>
         )
       } else {
-        return <TreeNode title={this.getTreeNodeTitle(item)} key={item.id}/>
+        return <TreeNode title={this.getTreeNodeTitle(item)} key={item.id} detail={item}/>
       }
     })
+  }
+
+  onSaveTask(datas) {
+    console.log(this.props.task);
+    if (this.props.task.selectedTask) {
+      datas.parentCode = this.props.task.selectedTask.code;
+    }
+    this.props.task.onSaveData(datas);
   }
 
   getTreeNodeTitle(node) {
     return (
       <div className="task-item">
-        <div className="title" style={{color: emergentLevel[node.emergent_level - 1].color}}>{node.title}</div>
-        <Progress type="circle" percent={node.complete_percent || 0} width={20}/>
+        <div className="header-info">
+          <div className="title" style={{color: emergentLevel[node.emergent_level - 1].color}}>{node.title}</div>
+          <Progress type="circle" percent={node.complete_percent || 0} width={20}/>
+        </div>
+        <div className="main-info">
+          <div className="info-item time">{`计划：${node.plan_start_date } ~ ${node.plan_end_date}`}</div>
+          {node.responsibleUser && (
+            <div className="info-item responsible-user">{`责任人：${node.responsibleUser.name}`}</div>
+          )}
+          <div className="info-item workload">{`工作量：${node.workload}`}</div>
+
+        </div>
       </div>
     )
   }
 
   render() {
-    const {dataList, operateType, showModal, selectedKeys, rowSelection, firstSelected} = this.props.task;
+    const {dataList, operateType, showModal, selectedKeys, rowSelection, selectedTask} = this.props.task;
     return (
       <div className="base-layout task-page">
         <header className="header">
@@ -74,8 +92,9 @@ class TaskPage extends Component {
         <div className="content">
           {dataList.length > 0 && (
             <Tree
+              showLine
               selectedKeys={selectedKeys}
-              onSelect={keys => this.props.task.onChangeSelection(keys)}
+              onSelect={(keys, {selectedNodes}) => this.props.task.onChangeSelection(keys, selectedNodes)}
               defaultExpandAll>
               {this.renderTreeNode(dataList)}
             </Tree>
@@ -84,9 +103,9 @@ class TaskPage extends Component {
         {showModal && (
           <TaskModal
             onCancel={() => this.props.task.toggleModal()}
-            onOk={(data) => this.props.task.onSaveData(data)}
+            onOk={(data) => this.onSaveTask(data)}
             operateType={operateType}
-            formData={firstSelected}
+            formData={selectedTask}
           />
         )}
       </div>
