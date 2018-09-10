@@ -44,7 +44,7 @@ class DraftService extends BaseService {
   }
 
   static async getMine(id) {
-    return await Draft.findAll({where: {user_id: id}});
+    return await Draft.findAll({where: {user_id: id , enable:true}});
   }
 }
 
