@@ -39,6 +39,9 @@ class DraftService extends BaseService {
   static async getDraftDetail(id) {
     return await Draft.findOne({where: {id}});
   }
+  static async dropDraft(id) {
+    return await Draft.findOne({where: {id}});
+  }
 
   static async getMine(id) {
     return await Draft.findAll({where: {user_id: id}});

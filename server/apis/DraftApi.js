@@ -31,6 +31,10 @@ class DraftApi extends BaseApi {
     return await DraftService.getDraftDetail(ctx.request.body);
   }
 
+  static async dropDraft(ctx) {
+    return await DraftService.deleteDrafts([ctx.request.body.id]);
+  }
+
   static async getMine(ctx) {
 
     const completed = ctx.request.body;
