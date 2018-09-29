@@ -43,7 +43,7 @@ class TaskService extends BaseService {
       task.code = await CodeService.generateCode('task');
     }
     if (task.draftId) {
-      await Draft.update({status: 1}, {id: task.draftId});
+      await Draft.update({status: 1}, {where:{id: task.draftId}});
     }
 
     const taskParticipators = Array.from(new Set([task.publish_user_id, task.responsible_user_id]));
