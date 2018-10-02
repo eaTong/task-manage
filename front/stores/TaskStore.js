@@ -9,7 +9,7 @@ import BaseStore from '~/stores/BaseStore'
 import {message} from "antd/lib/index";
 
 export default class TaskStore extends BaseStore {
-  listApi = '/api/task/mine';
+  listApi = '/api/task/mine/overview';
   addApi = '/api/task/add';
   updateApi = '/api/task/update';
   deleteApi = '/api/task/delete';

@@ -4,7 +4,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
 
-const User = sequelize.define('operation-log', {
+const User = sequelize.define('operationLog', {
   operator: Sequelize.INTEGER,
   type: Sequelize.STRING,
   url: Sequelize.STRING,

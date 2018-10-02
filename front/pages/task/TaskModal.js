@@ -36,8 +36,8 @@ class TaskModal extends Component {
       const formData = this.props.formData;
       this.props.form.setFieldsValue({
         ...formData,
-        responsible_user_id: formData.responsible_user_id + '',
-        plan: [moment(formData.plan_start_date), moment(formData.plan_end_date)]
+        responsibleUserId: formData.responsibleUserId + '',
+        plan: [moment(formData.planStartDate), moment(formData.planEndDate)]
       });
     }
     const {data} = await ajax({url: '/api/user/get'});
@@ -49,7 +49,7 @@ class TaskModal extends Component {
       if (errors) {
         return;
       }
-      this.props.onOk && this.props.onOk({...values, plan_start_date: values.plan[0], plan_end_date: values.plan[1]});
+      this.props.onOk && this.props.onOk({...values, planStartDate: values.plan[0], planEndDate: values.plan[1]});
     });
   }
 
@@ -74,13 +74,8 @@ class TaskModal extends Component {
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="紧急程度">
-            {getFieldDecorator('emergent_level', {initialValue: 3})(
+            {getFieldDecorator('emergentLevel', {initialValue: 3})(
               <Slider max={emergentLevel.length} min={1}/>
-            )}
-          </FormItem>
-          <FormItem {...formItemLayout} label="重要程度">
-            {getFieldDecorator('important_level', {initialValue: 3})(
-              <Slider max={importantLevel.length} min={1}/>
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="工作量">
@@ -89,7 +84,7 @@ class TaskModal extends Component {
             )}
           </FormItem>
           <FormItem {...formItemLayout} label="责任人">
-            {getFieldDecorator('responsible_user_id', {
+            {getFieldDecorator('responsibleUserId', {
               rules: [{
                 required: true, message: '请选择责任人!',
               }],

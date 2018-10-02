@@ -4,6 +4,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
 
-const RoleMenu = sequelize.define('role_menu', {}, {timestamps: false,});
+const RoleMenu = sequelize.define('roleMenu', {}, {timestamps: false,});
 
 module.exports = RoleMenu;

@@ -4,6 +4,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
 
-const UserRole = sequelize.define('user_role', {}, {timestamps: false,});
+const UserRole = sequelize.define('userRole', {}, {timestamps: false,});
 
 module.exports = UserRole;

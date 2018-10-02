@@ -5,6 +5,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
 
-const TaskParticipators = sequelize.define('task_participator', {}, {timestamps: false,});
+const TaskParticipators = sequelize.define('taskParticipator', {}, {timestamps: false,});
 
 module.exports = TaskParticipators;

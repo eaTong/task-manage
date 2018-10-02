@@ -10,9 +10,9 @@ const User = require('./User');
 const Draft = sequelize.define('draft', {
   title: {type: Sequelize.STRING},
   status: Sequelize.INTEGER,
-  user_id: Sequelize.INTEGER,
+  userId: Sequelize.INTEGER,
   enable: Sequelize.BOOLEAN,
 });
 
-Draft.belongsTo(User, {foreignKey: 'user_id', as: 'user'});
+Draft.belongsTo(User, {foreignKey: 'userId', as: 'user'});
 module.exports = Draft;

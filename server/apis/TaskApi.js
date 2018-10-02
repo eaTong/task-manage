@@ -32,6 +32,10 @@ class TaskApi extends BaseApi {
     return await TaskService.getTaskDetail(ctx.request.body);
   }
 
+  static async getMyTasksForOverview(ctx) {
+    const {completed} = ctx.request.body;
+    return await TaskService.getMyTasksForOverview(ctx.session.loginUser.id , completed);
+  }
   static async getMyTasks(ctx) {
     const {completed} = ctx.request.body;
     return await TaskService.getMyTasks(ctx.session.loginUser.id , completed);

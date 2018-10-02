@@ -8,7 +8,7 @@ const Menu = sequelize.define('menu', {
   path: {type: Sequelize.STRING, unique: true},
   name: Sequelize.STRING,
   icon: Sequelize.STRING,
-  parent_id:{type:Sequelize.INTEGER ,comment:'父级task_id'},
+  parentId:{type:Sequelize.INTEGER ,comment:'父级taskId'},
   level:{type:Sequelize.INTEGER ,comment:'层级'},
   enable: Sequelize.BOOLEAN,
 });

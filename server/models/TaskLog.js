@@ -7,12 +7,12 @@ const Sequelize = require('sequelize');
 const sequelize = require('../framework/database');
 const Task = require('./Task');
 
-const TaskLog = sequelize.define('task_log', {
+const TaskLog = sequelize.define('taskLog', {
   content: {type: Sequelize.STRING, comment: '正文'},
-  before_percent: {type: Sequelize.INTEGER, comment: '开始比例'},
-  after_percent: {type: Sequelize.INTEGER, comment: '结束比例'},
+  beforePercent: {type: Sequelize.INTEGER, comment: '开始比例'},
+  afterPercent: {type: Sequelize.INTEGER, comment: '结束比例'},
 });
 
-Task.hasMany(TaskLog, {foreignKey: 'task_id'});
-TaskLog.belongsTo(Task, {foreignKey: 'task_id'});
+Task.hasMany(TaskLog, {foreignKey: 'taskId'});
+TaskLog.belongsTo(Task, {foreignKey: 'taskId'});
 module.exports = TaskLog;

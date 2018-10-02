@@ -16,15 +16,14 @@ const ButtonGroup = Button.Group;
 const columns = [
   {title: '名称', dataIndex: 'title'},
   {title: '描述', dataIndex: 'description'},
-  {title: '紧急程度', dataIndex: 'emergent_level'},
-  {title: '重要程度', dataIndex: 'important_level'},
+  {title: '紧急程度', dataIndex: 'emergentLevel'},
   {title: '发布人', dataIndex: 'publishUser', render: item => item && item.name},
   {title: '责任人', dataIndex: 'responsibleUser', render: item => item && item.name},
-  {title: '完成比例', dataIndex: 'complete_percent'},
-  {title: '计划开始日期', dataIndex: 'plan_start_date'},
-  {title: '计划结束日期', dataIndex: 'plan_end_date'},
-  {title: '实际开始日期', dataIndex: 'start_date'},
-  {title: '实际结束日期', dataIndex: 'end_date'},
+  {title: '完成比例', dataIndex: 'completePercent'},
+  {title: '计划开始日期', dataIndex: 'planStartDate'},
+  {title: '计划结束日期', dataIndex: 'planEndDate'},
+  {title: '实际开始日期', dataIndex: 'startDate'},
+  {title: '实际结束日期', dataIndex: 'endDate'},
 ];
 
 @inject('task') @observer
@@ -59,11 +58,11 @@ class TaskPage extends Component {
     return (
       <div className="task-item">
         <div className="header-info">
-          <div className="title" style={{color: emergentLevel[node.emergent_level - 1].color}}>{node.title}</div>
-          <Progress type="circle" percent={node.complete_percent || 0} width={20}/>
+          <div className="title" style={{color: emergentLevel[node.emergentLevel - 1].color}}>{node.title}</div>
+          <Progress type="circle" percent={node.completePercent || 0} width={20}/>
         </div>
         <div className="main-info">
-          <div className="info-item time">{`计划：${node.plan_start_date } ~ ${node.plan_end_date}`}</div>
+          <div className="info-item time">{`计划：${node.planStartDate } ~ ${node.planEndDate}`}</div>
           {node.responsibleUser && (
             <div className="info-item responsible-user">{`责任人：${node.responsibleUser.name}`}</div>
           )}
