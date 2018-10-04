@@ -29,7 +29,12 @@ class TaskApi extends BaseApi {
   }
 
   static async getTaskDetail(ctx) {
-    return await TaskService.getTaskDetail(ctx.request.body);
+    return await TaskService.getTaskDetail(ctx.request.body.id);
+  }
+
+
+  static async getStructuredTaskDetail(ctx) {
+    return await TaskService.getStructuredTaskDetail(ctx.request.body.id);
   }
 
   static async getMyTasksForOverview(ctx) {

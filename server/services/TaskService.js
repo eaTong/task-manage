@@ -43,7 +43,7 @@ class TaskService extends BaseService {
       task.code = await CodeService.generateCode('task');
     }
     if (task.draftId) {
-      await Draft.update({status: 1}, {where:{id: task.draftId}});
+      await Draft.update({status: 1}, {where: {id: task.draftId}});
     }
 
     const taskParticipators = Array.from(new Set([task.publishUserId, task.responsibleUserId]));
@@ -83,7 +83,8 @@ class TaskService extends BaseService {
   static async getTaskDetail(id) {
     return await Task.findOne({where: {id}, include: [{model: TaskLog}]});
   }
-  static async getMyTasks(id , completed) {
+
+  static async getMyTasks(id, completed) {
     return await Task.findAll({
       include: [
         {model: User, as: 'responsibleUser', where: {id}},
@@ -107,9 +108,30 @@ class TaskService extends BaseService {
     });
     return structureTaskTree(myTasks);
   }
+
+  static async getStructuredTaskDetail(id) {
+    const task = await Task.findOne({where: {id}});
+    if (task) {
+      const allTasks = await Task.findAll({
+        where: {code: {[Op.like]:`${ task.code}%`}},
+        include: [{model: TaskLog}],
+        order: [['code', 'DESC']]
+      });
+      const taskLogs = [];
+      allTasks.forEach((task)=>{
+        taskLogs.push(...task.taskLogs);
+      });
+      return {
+        taskLogs,
+        tasks:structureTaskTree(allTasks),
+      }
+    } else {
+      throw new LogicError('ID 不合法或数据已被删除');
+    }
+  }
 }
 
-function structureTaskTree(myTasks){
+function structureTaskTree(myTasks) {
   const taskMapping = {};
   myTasks.forEach(item => {
     item = item.toJSON();
@@ -135,5 +157,3 @@ function structureTaskTree(myTasks){
 }
 
 module.exports = TaskService;
-// TaskService.addTask({title: 'bbbbb', parentId: 36, responsibleUserId: 2}, 2);
-// TaskService.getMyTasks(1)

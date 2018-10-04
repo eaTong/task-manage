@@ -49,6 +49,7 @@ router.post('/api/task/delete', insertLog('delete'), checkArguments(['ids']), Ta
 router.post('/api/task/detail', checkArguments(['id']), TaskApi.getTaskDetail);
 router.post('/api/task/mine/overview', TaskApi.getMyTasksForOverview);
 router.post('/api/task/mine', TaskApi.getMyTasks);
+router.post('/api/task/detail/structured', TaskApi.getStructuredTaskDetail);
 
 router.post('/api/draft/add', insertLog('add'), checkArguments(['title']), DraftApi.addDraft);
 router.post('/api/draft/get', DraftApi.getDrafts);

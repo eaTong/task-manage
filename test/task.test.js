@@ -7,8 +7,8 @@
 
 const TaskService = require('../server/services/TaskService');
 
-TaskService.addTask({
-  emergency_level: 4,
+/*TaskService.addTask({
+  emergency_level: 4,Task.findOne({where: {id}, include: [{model: TaskLog}]});
   draftId: '1',
   planStartDate: '2018-09-30',
   planEndDate: '2018-10-31',
@@ -16,4 +16,7 @@ TaskService.addTask({
   responsible_user_id: 1,
   title:'aaaaaa',
 
-}, 1);
+}, 1);*/
+(async ()=>{
+  console.log(await TaskService.getStructuredTaskDetail('2'))
+})();
