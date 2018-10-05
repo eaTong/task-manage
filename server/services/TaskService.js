@@ -120,7 +120,7 @@ class TaskService extends BaseService {
       const taskLogs = [];
       allTasks.forEach((task)=>{
         task.taskLogs.forEach(log =>{
-          taskLogs.push({...log , task});
+          taskLogs.push({...log , task:task.dataValues});
         });
         // taskLogs.push(...task.taskLogs);
       });
