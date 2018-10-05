@@ -12,6 +12,7 @@ const RoleApi = require('./apis/RoleApi');
 const MenuApi = require('./apis/MenuApi');
 const TaskApi = require('./apis/TaskApi');
 const DraftApi = require('./apis/DraftApi');
+const TaskLogApi = require('./apis/TaskLogApi');
 //UPDATE_TAG:importApi
 
 const router = new Router();
@@ -58,6 +59,12 @@ router.post('/api/draft/delete', insertLog('delete'), checkArguments(['ids']), D
 router.post('/api/draft/detail',  checkArguments(['id']), DraftApi.getDraftDetail);
 router.post('/api/draft/drop',  checkArguments(['id']), DraftApi.dropDraft);
 router.post('/api/draft/mine', DraftApi.getMine);
+
+router.post('/api/taskLog/add', insertLog('add'), checkArguments(['content','taskId']), TaskLogApi.addTaskLog);
+router.post('/api/taskLog/get', TaskLogApi.getTaskLogs);
+router.post('/api/taskLog/update', insertLog('update'), checkArguments(['id', 'name']), TaskLogApi.updateTaskLogs);
+router.post('/api/taskLog/delete', insertLog('delete'), checkArguments(['ids']), TaskLogApi.deleteTaskLogs);
+router.post('/api/taskLog/detail',  checkArguments(['id']), TaskLogApi.getTaskLogDetail);
 //UPDATE_TAG:defineRouter
 
 router.post('/api/*', async ctx => {
