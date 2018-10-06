@@ -8,6 +8,8 @@ node_modules
 
 # webstorm config
 .idea
+# upload
+assets/upload/img
 
 # logs
 *.log

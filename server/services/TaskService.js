@@ -113,19 +113,24 @@ class TaskService extends BaseService {
     const task = await Task.findOne({where: {id}});
     if (task) {
       const allTasks = await Task.findAll({
-        where: {code: {[Op.like]:`${ task.code}%`}},
-        include: [{model: TaskLog}],
+        where: {code: {[Op.like]: `${ task.code}%`}},
+        include: [
+          {model: TaskLog},
+          {model: User, as: 'responsibleUser'},
+          {model: User, as: 'publishUser'},
+          {model: User, as: 'participators', where: {id}}
+        ],
         order: [['code', 'DESC']]
       });
       const taskLogs = [];
-      allTasks.forEach((task)=>{
-        task.taskLogs.forEach(log =>{
-          taskLogs.push({...log.dataValues , task:task.dataValues});
+      allTasks.forEach((task) => {
+        task.taskLogs.forEach(log => {
+          taskLogs.push({...log.dataValues, task: task.dataValues});
         });
       });
       return {
         taskLogs,
-        tasks:structureTaskTree(allTasks),
+        tasks: structureTaskTree(allTasks),
       }
     } else {
       throw new LogicError('ID 不合法或数据已被删除');
