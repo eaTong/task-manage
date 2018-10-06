@@ -18,5 +18,7 @@ const TaskService = require('../server/services/TaskService');
 
 }, 1);*/
 (async ()=>{
-  console.log(await TaskService.getStructuredTaskDetail('2'))
+  const taskDetail = await TaskService.getStructuredTaskDetail('1');
+  console.log(taskDetail.toJSON())
+  console.log(taskDetail);
 })();
