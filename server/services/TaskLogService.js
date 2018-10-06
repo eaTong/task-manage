@@ -18,7 +18,14 @@ class TaskLogService extends BaseService {
     if(task){
       taskLog.beforePercent = task.completePercent;
       task.completePercent = taskLog.afterPercent;
+      task.startDate = task.startDate || new Date();
+      if(task.completePercent){
+        task.endDate = new Date();
+      }
       await task.save();
+      if(taskLog.afterPercent === 100){
+        Task.update({completePercent:100},{where:{code:{[Op.like]:`${task.code}%`}}})
+      }
     }else{
       throw new LogicError('任务不存在');
     }
