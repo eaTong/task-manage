@@ -1,4 +1,3 @@
-
 /**
  * Created by eaTong on 2018-05-10 .
  * Description: auto generated in  2018-05-10
@@ -14,19 +13,26 @@ const Task = require('../models/Task');
 class TaskLogService extends BaseService {
 
   static async addTaskLog(taskLog) {
-    const task = await Task.findOne({where: {id:taskLog.taskId}, include: [{model: TaskLog}]});
-    if(task){
+    const task = await Task.findOne({where: {id: taskLog.taskId}, include: [{model: TaskLog}]});
+    if (task) {
       taskLog.beforePercent = task.completePercent;
       task.completePercent = taskLog.afterPercent;
       task.startDate = task.startDate || new Date();
-      if(task.completePercent){
+      if (task.completePercent) {
         task.endDate = new Date();
       }
       await task.save();
-      if(taskLog.afterPercent === 100){
-        Task.update({completePercent:100},{where:{code:{[Op.like]:`${task.code}%`}}})
+      if (taskLog.afterPercent === 100) {
+        Task.update({completePercent: 100, endDate: new Date()}, {
+          where: {
+            code: {
+              [Op.like]: `${task.code}%`,
+              completePercent: {[Op.ne]: 100}
+            }
+          }
+        })
       }
-    }else{
+    } else {
       throw new LogicError('任务不存在');
     }
     return await TaskLog.create(taskLog);
