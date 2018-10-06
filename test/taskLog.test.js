@@ -8,5 +8,5 @@
 const TaskLogService = require('../server/services/TaskLogService');
 
 (async ()=>{
-  console.log(await TaskLogService.addTaskLog({taskId:1,content:'aaaaaa',afterPercent:70}))
+  console.log(await TaskLogService.addTaskLog({taskId:2,content:'aaaaaa',afterPercent:100}))
 })();

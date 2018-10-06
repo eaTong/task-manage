@@ -23,12 +23,23 @@ class TaskLogService extends BaseService {
       }
       await task.save();
       if (taskLog.afterPercent === 100) {
+        // 未开始自动开始
+        Task.update({startDate: new Date()}, {
+          where: {
+            code: {
+              [Op.like]: `${task.code}%`,
+            },
+            startDate: {[Op.eq]: null}
+          }
+        });
+
+        // 未完成自动完成
         Task.update({completePercent: 100, endDate: new Date()}, {
           where: {
             code: {
               [Op.like]: `${task.code}%`,
-              completePercent: {[Op.ne]: 100}
-            }
+            },
+            completePercent: {[Op.ne]: 100}
           }
         })
       }
