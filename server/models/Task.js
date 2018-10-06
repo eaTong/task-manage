@@ -18,8 +18,7 @@ const Task = sequelize.define('task', {
   planEndDate: {type: Sequelize.DATEONLY, comment: '计划结束日期'},
   startDate: {type: Sequelize.DATEONLY, comment: '开始日期'},
   endDate: {type: Sequelize.DATEONLY, comment: '结束日期'},
-  workload: {type: Sequelize.STRING, defaultValue: 0, comment: '工作量'},
-  // parentId: {type: Sequelize.INTEGER, defaultValue: 0, comment: '父级taskId'},采用code作为层级嵌套
+  workload: {type: Sequelize.INTEGER, defaultValue: 0, comment: '工作量'},
   level: {type: Sequelize.INTEGER, comment: '层级'},
   pictures: {type: Sequelize.STRING, comment: '图片'},
   responsibleUserId: {type: Sequelize.INTEGER,},
